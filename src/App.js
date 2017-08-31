@@ -67,12 +67,12 @@ class App extends Component {
     mc.get('pinch').set({ enable: true })
 
     
-     mc.on("swipedown", ev => this.incrementRays())
-      .on("swipeup", ev => this.decrementRays())
-      .on("swipeleft", ev => this.incrementRayLength())
-      .on("swiperight", ev => this.decrementRayLength())
-      .on("pinchin", ev => { this.incrementRayLength(); this.incrementRays();} )
-      .on("pinchout", ev => { this.decrementRayLength(); this.decrementRays();})
+     mc.on("swipedown", ev => this.incrementDimensionOfMinLength())
+      .on("swipeup", ev => this.decrementDimensionOfMinLength())
+      .on("swipeleft", ev => this.incrementTriangleCount())
+      .on("swiperight", ev => this.decrementTriangleCount())
+      .on("pinchin", ev => { this.incrementDimensionOfMinLength(); this.incrementTriangleCount();} )
+      .on("pinchout", ev => { this.decrementDimensionOfMinLength(); this.decrementTriangleCount();})
   }
 
   handleKeydown (ev) {
