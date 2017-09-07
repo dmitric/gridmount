@@ -224,29 +224,51 @@ class App extends Component {
     const actualHeight = this.getActualHeight()
     const actualWidth = this.getActualWidth()
 
+    const portrait = actualHeight > actualWidth
+
     const dim = Math.min(actualHeight, actualWidth)/this.state.dimensionOfMinLength
 
-    const maxDiff = Math.min(actualHeight, actualWidth) * 2 * (actualWidth > actualHeight ? actualWidth/actualHeight : actualHeight/actualWidth)
+    const maxDiff = Math.min(actualHeight, actualWidth) * 2 * (!portrait ? actualWidth/actualHeight : actualHeight/actualWidth)
     
-    let iter = 0;
+    let iter = 0
 
     for (let i = 0; i <= maxDiff; i += dim) {
+
+      const post = portrait ? {
+        x1: i, y1: 0,
+        x2: i - actualHeight*Math.tan(Math.PI/4),
+        y2: actualHeight
+      } : {
+        x1: 0, y1: i,
+        x2: actualWidth, y2: i - actualWidth*Math.tan(Math.PI/4)
+      }
+
       lines.push(
         <line key={`up-${iter}`} id={`up-${iter}`}
-              x1={0} y1={i}
-              x2={actualWidth} y2={i - actualWidth*Math.tan(Math.PI/4)}
+              x1={post.x1} y1={post.y1}
+              y2={post.y2} x2={post.x2}
               stroke={this.state.lineColor} strokeWidth={this.state.strokeWidth} />
       )
       iter ++
     }
 
-    iter = 0;
+    iter = 0
 
-    for (let i = actualHeight; i >= -maxDiff; i -= dim) {
+    for (let i = portrait ? actualWidth : actualHeight; i >= -maxDiff; i -= dim) {
+      
+      const post = portrait ? {
+        x1: i, y1: 0,
+        x2: i + actualHeight*Math.tan(Math.PI/4),
+        y2: actualHeight
+      } : {
+        x1: 0, y1: i,
+        x2: actualWidth, y2: i + actualWidth*Math.tan(Math.PI/4)
+      }
+
       lines.push(
         <line key={`down-${iter}`} id={`down-${iter}`}
-              x1={0} y1={i}
-              x2={actualWidth} y2={i + actualWidth*Math.tan(Math.PI/4)}
+              x1={post.x1} y1={post.y1} 
+              y2={post.y2} x2={post.x2}
               stroke={this.state.lineColor} strokeWidth={this.state.strokeWidth} />
       )
       iter ++
